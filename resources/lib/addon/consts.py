@@ -68,12 +68,12 @@ TMDB_ALL_ITEMS_LISTS = {
     'movie': {
         'type': 'movie',
         'sort': False,
-        'limit': 20
+        'limit': 100
     },
     'tv': {
         'type': 'tv_series',
         'sort': False,
-        'limit': 20
+        'limit': 100
     },
     'person': {
         'type': 'person',
@@ -83,7 +83,7 @@ TMDB_ALL_ITEMS_LISTS = {
     'collection': {
         'type': 'collection',
         'sort': False,
-        'limit': 20,
+        'limit': 100,
         'params': {
             'info': 'collection',
             'tmdb_id': '{tmdb_id}',
