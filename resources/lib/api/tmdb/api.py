@@ -444,7 +444,7 @@ class TMDb(RequestAPI):
             return
         items = []
         param = schema.get('params', {})
-        limit = schema.get('limit', 20)
+        limit = schema.get('limit', 100)
         pos_z = try_int(page, fallback=1) * limit
         pos_a = pos_z - limit
         dbtype = convert_type(tmdb_type, 'dbtype')
