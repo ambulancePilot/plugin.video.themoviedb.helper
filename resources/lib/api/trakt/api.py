@@ -129,7 +129,7 @@ class _TraktLists():
         return TraktItems(response.json(), headers=response.headers, trakt_type=trakt_type).configure_items()
 
     @is_authorized
-    def get_mixed_list(self, path, trakt_types=[], limit=20, extended=None, authorize=False):
+    def get_mixed_list(self, path, trakt_types=[], limit=100, extended=None, authorize=False):
         """ Returns a randomised simple list which combines movies and shows
         path uses {trakt_type} as format substitution for trakt_type in trakt_types
         """
@@ -142,7 +142,7 @@ class _TraktLists():
             return random.sample(items, limit)
 
     @is_authorized
-    def get_basic_list(self, path, trakt_type, page=1, limit=20, params=None, sort_by=None, sort_how=None, extended=None, authorize=False, randomise=False, always_refresh=True):
+    def get_basic_list(self, path, trakt_type, page=1, limit=100, params=None, sort_by=None, sort_how=None, extended=None, authorize=False, randomise=False, always_refresh=True):
         # TODO: Add argument to check whether to refresh on first page (e.g. for user lists)
         # Also: Think about whether need to do it for standard respons
         cache_refresh = True if always_refresh and try_int(page, fallback=1) == 1 else False
@@ -161,7 +161,7 @@ class _TraktLists():
             return response['items'] + get_next_page(response['headers'])
 
     @is_authorized
-    def get_stacked_list(self, path, trakt_type, page=1, limit=20, params=None, sort_by=None, sort_how=None, extended=None, authorize=False, always_refresh=True, **kwargs):
+    def get_stacked_list(self, path, trakt_type, page=1, limit=100, params=None, sort_by=None, sort_how=None, extended=None, authorize=False, always_refresh=True, **kwargs):
         """ Get Basic list but stack repeat TV Shows """
         cache_refresh = True if always_refresh and try_int(page, fallback=1) == 1 else False
         response = self.get_simple_list(path, extended=extended, limit=4095, trakt_type=trakt_type, cache_refresh=cache_refresh)
@@ -170,7 +170,7 @@ class _TraktLists():
         if response:
             return response['items'] + get_next_page(response['headers'])
 
-    def get_custom_list(self, list_slug, user_slug=None, page=1, limit=20, params=None, authorize=False, sort_by=None, sort_how=None, extended=None, owner=False, always_refresh=True):
+    def get_custom_list(self, list_slug, user_slug=None, page=1, limit=100, params=None, authorize=False, sort_by=None, sort_how=None, extended=None, owner=False, always_refresh=True):
         if authorize and not self.authorize():
             return
         path = f'users/{user_slug or "me"}/lists/{list_slug}/items'
@@ -482,7 +482,7 @@ class TraktAPI(RequestAPI, _TraktSync, _TraktLists, _TraktProgress):
         self.last_activities = {}
         self.sync_activities = {}
         self.sync = {}
-        self.item_limit = 83 if get_setting('trakt_expandedlimit') else 20  # 84 (83+NextPage) has common factors 4,6,7,8 suitable for wall views
+        self.item_limit = 83 if get_setting('trakt_expandedlimit') else 100  # 84 (83+NextPage) has common factors 4,6,7,8 suitable for wall views
         self.login() if force else self.authorize()
 
     def authorize(self, login=False):
