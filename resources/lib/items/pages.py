@@ -12,7 +12,7 @@ def get_next_page(response_headers=None):
 class PaginatedItems():
     def __init__(self, items, page=None, limit=None):
         self.all_items = items or []
-        self.limit = try_int(limit) or 100
+        self.limit = 100
         self.get_page(page)
 
     def get_page(self, page=None):
